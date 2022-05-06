@@ -3,6 +3,9 @@ import fetch from 'node-fetch'
 import osu from 'node-os-utils'
 const {cpu, drive, mem } = osu
 import os from 'os'
+import process from 'process'
+
+var URL = process.argv[2]
 
 sendStats()
 setInterval(sendStats, 5000)
@@ -23,14 +26,15 @@ async function sendStats() {
 
     // body.test = "test"
     // console.log(`CPU count: ${count}`)
-    
-    fetch('http://localhost:3000/', {
+    URL ? null : URL = 'http://localhost:3000'
+    fetch(URL, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(body)
     })
     .then(res => res.json())
-    .then(res => console.log(res));
+    .then(res => console.log(res))
+    .catch(err => console.log(err))
 }
 
 //round a number to the specified number of decimal places

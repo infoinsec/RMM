@@ -21,11 +21,12 @@ app.post('/', (req, res) => {
     //write object to file
     fs.writeFile(`data.json`, JSON.stringify(data), (err) => {
         if (err) throw err
-        console.log('The file has been saved!')
+        console.log('The file has been saved! :')
+        console.log(data)
+        res.json({
+            message: `Success!`
+        });
     })
-    res.json({
-        message: `Success!`
-    });
 });
 
 app.listen(3000, () => {
