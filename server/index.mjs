@@ -19,7 +19,7 @@ app.post('/', (req, res) => {
     if (data[hostname].length > 5) data[hostname].shift()
     data[hostname].push(body)
     //write object to file
-    fs.writeFile(`data.json`, JSON.stringify(data), (err) => {
+    fs.writeFile(`../data.json`, JSON.stringify(data), (err) => {
         if (err) throw err
         console.log('The file has been saved! :')
         console.log(data)
