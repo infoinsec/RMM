@@ -8,7 +8,7 @@ function App() {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    fetch("http://158.101.97.67:3000/data.json")
+    fetch("http://158.101.97.67:8080/data.json")
     // fetch("https://api.example.com/items")
       .then(res => res.json())
       .then(
