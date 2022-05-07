@@ -42,6 +42,12 @@ app.post('/', (req, res) => {
     })
 })
 
+app.get('/data.json', (req, res) => {
+    console.log('got a request for data.json')
+    let data = fs.readFileSync('../data.json', 'utf8')
+    res.json(data);
+});
+
 app.listen(3000, () => {
     console.log('Server is listening on port 3000.')
 })
