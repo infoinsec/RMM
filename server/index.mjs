@@ -19,6 +19,8 @@ app.use(function (req, res, next) {
     next()
 })
 
+app.use("/", express.static('.../dashboard/build/'))
+
 var data = {}
 app.post('/', (req, res) => {
     let body = req.body
