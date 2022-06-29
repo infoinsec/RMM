@@ -10,32 +10,60 @@ function App() {
   const [error, setError] = useState(null)
   const [isLoaded, setIsLoaded] = useState(false)
   const [items, setItems] = useState([])
+  const [hosts, setHosts] = useState([])
 
-function getData() {
-  fetch("http://158.101.97.67:3000/data.json")
-  // fetch("https://api.example.com/items")
-    .then(res => res.json())
-    .then(
-      (result) => {
-        setIsLoaded(true)
-        setItems(JSON.parse(result))
-      },
-      // Note: it's important to handle errors here
-      // instead of a catch() block so that we don't swallow
-      // exceptions from actual bugs in components.
-      (error) => {
-        setIsLoaded(true)
-        setError(error)
-      }
-    )
-}
+  function getData() {
+    fetch("http://158.101.97.67:3000/data.json")
+    // fetch("https://api.example.com/items")
+      .then(res => res.json())
+      .then(
+        (result) => {
+          setIsLoaded(true)
+          setItems(JSON.parse(result))
+          setHosts(() => {
+            let newHosts = Object.keys(JSON.parse(result))
+            newHosts = newHosts.sort()
+            oldHosts = hosts.sort()
+            if (oldHosts.length !== newHosts.length) {
+              return newHosts
+            }
+            return oldHosts            
+          })
 
-// getData()
-// useInterval(() => {
-//   getData()
-// }, 1000)
+        },
+        // Note: it's important to handle errors here
+        // instead of a catch() block so that we don't swallow
+        // exceptions from actual bugs in components.
+        (error) => {
+          setIsLoaded(true)
+          setError(error)
+        }
+      )
+  }
 
-useEffect(() => {
+  // getData()
+  // useInterval(() => {
+  //   getData()
+  // }, 1000)
+
+  var Chart = props => {
+    return <div>Chart</div>
+  }
+
+
+  const Legend = React.memo(({hosts}) => {
+    // let hosts = Object.keys(items)
+    console.log(hosts)
+    hosts = hosts.sort().map(host => {return (<div key={host}>
+        <input type="checkbox" id={host} name={host} value={host} />
+        <label htmlFor={host}>{host}</label>
+      </div>)})
+    return <form>
+      {hosts}
+    </form>
+  })
+
+  useEffect(() => {
     getData()
     const interval = setInterval(() => {
       console.log('This will run every second!')
@@ -43,7 +71,7 @@ useEffect(() => {
     }, 1000)
     return () => clearInterval(interval)
   }, [])
-  
+    
   if (error) {
     return <div>Error: {error.message}</div>
   } else if (!isLoaded) {
@@ -51,9 +79,10 @@ useEffect(() => {
   } else {
     return (
       <div className="App">
-        <Chart data="myData"/>
-        <br />
         {JSON.stringify(Object.keys(items))}
+        <br />
+        <Chart />
+        <Legend hosts={hosts}/>
 
       </div>
       // <ul>
@@ -65,10 +94,6 @@ useEffect(() => {
       // </ul>
     )
   }
-}
-
-const Chart = props => {
-  return props.data
 }
 
 export default App
